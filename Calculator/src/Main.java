@@ -6,20 +6,20 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        try {
-            Scanner scanner = new Scanner(System.in);
-            String input = scanner.nextLine();
-            System.out.println(calc(input));
-        } catch (IllegalArgumentException ex) {
-            System.out.println("Invalid input");
+            try {
+                Scanner scanner = new Scanner(System.in);
+                String input = scanner.nextLine();
+                System.out.println(calc(input));
+            } catch (IllegalArgumentException ex) {
+                System.out.println("Invalid input");
+            }
         }
-    }
 
     public static String calc(String input) throws Exception {
 
         if (isRoman(input)) {
             int result = operation(romanToArabic(input));
-            if (result > 0) {
+            if (result > 0 && result < 4000) {
                 return arabicToRoman(String.valueOf(result));
             } else {
                 throw new Exception();
@@ -65,7 +65,7 @@ public class Main {
         if (romanNumeral.length() > 0) {
             throw new IllegalArgumentException(input + " cannot be converted to a Roman Numeral");
         }
-        if (result > 10) {
+        if (result > 3999) {
             throw new IllegalArgumentException();
         } else {
             return String.valueOf(result);
@@ -73,7 +73,7 @@ public class Main {
     }
 
     public static String arabicToRoman(String input) {
-        int number = Integer.valueOf(input);
+        int number = Integer.parseInt(input);
         if ((number <= 0) || (number > 4000)) {
             throw new IllegalArgumentException(number + " is not in range (0,4000]");
         }
@@ -95,9 +95,9 @@ public class Main {
     }
 
     public static boolean isRoman(String input) throws Exception {
-        if (input.length() < 5 || input.length() > 11)
+        if (input.length() < 5)
             throw new Exception();
-        String regex = "^(X{0,3}|IX|IV|V?I{0,3})$";
+        String regex = "^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$";
         String[] arr = input.split("\\s");
         return arr[0].matches(regex) && arr[2].matches(regex) && isOperator(arr[1]);
     }
